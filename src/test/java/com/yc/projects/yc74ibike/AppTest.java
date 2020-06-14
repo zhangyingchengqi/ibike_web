@@ -23,10 +23,8 @@ public class AppTest extends TestCase {
 
 	@Autowired
 	private DataSource dataSource;
-
 	@Autowired
 	private BikeDao bikeDao;
-
 	@Autowired
 	private BikeService bikeService;
 
