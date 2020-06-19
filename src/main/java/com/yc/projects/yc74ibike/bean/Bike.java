@@ -1,6 +1,7 @@
 package com.yc.projects.yc74ibike.bean;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class Bike implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -9,6 +10,27 @@ public class Bike implements Serializable {
 	private String qrcode;
 	private Double latitude;
 	private Double longitude;
+	
+	
+	private Long id;
+	private Double[] loc=new Double[2];
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Double[] getLoc() {
+		return loc;
+	}
+
+	public void setLoc(Double[] loc) {
+		this.loc = loc;
+	}
 
 	/**
 	 *  0未启用  
@@ -69,7 +91,8 @@ public class Bike implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Bike [bid=" + bid + ", status=" + status + ", qrcode=" + qrcode + ", latitude=" + latitude + ", longitude=" + longitude + "]";
+		return "Bike [bid=" + bid + ", status=" + status + ", qrcode=" + qrcode + ", latitude=" + latitude + ", longitude=" + longitude + ", id=" + id + ", loc=" + Arrays.toString(loc) + "]";
 	}
 
+	
 }

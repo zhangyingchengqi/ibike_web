@@ -1,5 +1,7 @@
 package com.yc.projects.yc74ibike.web.controllers;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,17 @@ public class BikeController {
 	@Autowired
 	private BikeService bikeService;
 	
+	
+	@RequestMapping(value = "/findNearAll", method = {  RequestMethod.POST })
+	@ApiOperation(value = "查找最近的单车", notes = "查找最近的40部单车")
+	public @ResponseBody JsonModel findNearAll(  @ApiIgnore JsonModel jm,@RequestBody Bike bike  ) {
+		List<Bike> list= bikeService.findNearAll(   bike);
+		jm.setCode(1);
+		jm.setObj(list);
+		return jm;
+	}
+	
+	
 	/**
 	 * 扫码开锁
 	 * @param jsonModel:返回值部分，
@@ -37,6 +50,7 @@ public class BikeController {
 	 */
 	@RequestMapping(value="/open",method= {RequestMethod.POST})
 	@ApiOperation(  value="用户端开锁操作",notes="给指定的共享单车开锁，参数以json格式传过来")
+	//   @RequestBody： 表示将客户端传过来的 post实体中json转为对象. 则请求method必须是 POST.
 	public @ResponseBody JsonModel open( @ApiIgnore JsonModel jsonModel,  @RequestBody Bike bike    ) {
 		logger.info("请求参数:"+bike);
 		try {

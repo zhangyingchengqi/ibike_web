@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.TestPropertySource;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -14,12 +15,12 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@Configuration
+//@Configuration
 @EnableSwagger2    //启用swaggerr 注解解析器
 public class AppConfig_Swagger {
 	// 是否开启swagger，正式环境一般是需要关闭的，可根据springboot的多环境配置进行设置
 	@Value(value = "${swagger.enabled}")  //通过 @Value  获取配置信息   复习   @Environement  @Value    @ConfigurationProperties
-	Boolean swaggerEnabled;
+	Boolean swaggerEnabled=true;
 	
 	@Bean
     public Docket createRestApi() {

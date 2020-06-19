@@ -1,8 +1,14 @@
 package com.yc.projects.yc74ibike.service.impl;
 
+import java.util.List;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Point;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +25,9 @@ import io.swagger.annotations.Api;
 public class BikeServiceImpl implements BikeService {
 	@Autowired
 	private BikeDao bikeDao;
+	
+	@Autowired
+	private MongoTemplate mongoTemplate;
 
 	private Logger logger = LogManager.getLogger();
 
@@ -69,4 +78,36 @@ public class BikeServiceImpl implements BikeService {
 		return bike;
 	}
 
+	@Override
+	public List<Bike> findNearAll(Bike bike) {
+		//  db.bike.find(      {loc:{$near:[28.189122,112.943867]}, status:1} ) 
+		Query query=new Query();
+		query.addCriteria(  Criteria.where("status").is(  bike.getStatus()  )     )
+		     .addCriteria(  Criteria.where("loc").near(new Point( bike.getLongitude(),bike.getLatitude()) ))
+		     .limit(10);
+		
+		//   查出来的json结构: { "_id" : 100001, "status" : 1, "loc" : [ 28.189133, 112.943868 ], "qrcode" : "" }   
+		List<Bike> list= this.mongoTemplate.find(query, Bike.class, "bike");
+		
+		for(  Bike b:list) {
+			b.setBid(    b.getId() );
+			b.setId(null);
+			b.setLongitude(     b.getLoc()[1]);
+			b.setLatitude(   b.getLoc()[0]);
+			b.setLoc(null);
+		}
+		return list;
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+

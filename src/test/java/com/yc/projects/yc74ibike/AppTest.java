@@ -1,19 +1,26 @@
 package com.yc.projects.yc74ibike;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.yc.projects.yc74ibike.bean.Bike;
 import com.yc.projects.yc74ibike.config.AppConfig;
 import com.yc.projects.yc74ibike.dao.BikeDao;
 import com.yc.projects.yc74ibike.service.BikeService;
+import com.yc.projects.yc74ibike.service.UserService;
 
 import junit.framework.TestCase;
 
@@ -27,6 +34,41 @@ public class AppTest extends TestCase {
 	private BikeDao bikeDao;
 	@Autowired
 	private BikeService bikeService;
+	@Autowired
+	private MongoTemplate mongoTemplate;
+	
+	@Autowired
+	private RedisTemplate redisTemplate;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Test
+	public void testUserService() throws Exception {
+		userService.genVerifyCode("86", "15386490869");
+	}
+	
+	@Test
+	public void testRedisTemplate() {
+		System.out.println(    redisTemplate);
+	}
+	
+	
+	@Test 
+	public void testNearBikes() {
+		Bike b=new Bike();
+		b.setLatitude(28.189122);
+		b.setLongitude(112.943867);
+		b.setStatus(1);
+		List<Bike> list=bikeService.findNearAll(b);
+		System.out.println(  list );
+	}
+	
+	@Test
+	public void testMongoTemplate() {
+		System.out.println( mongoTemplate.getDb().getName() );
+		System.out.println(  mongoTemplate.getCollectionNames()  );
+	}
 
 	@Test
 	public void testDataSource() throws SQLException {
