@@ -35,7 +35,7 @@ public class AppConfig {
 	private Logger log = Logger.getLogger(AppConfig.class);
 	
 	
-	@Bean
+	@Bean   // 键[字符串]: 值[对象]
 	public RedisTemplate redsiTemplate() {
 		JedisConnectionFactory conn = new JedisConnectionFactory();
         conn.setDatabase(0);
@@ -50,7 +50,7 @@ public class AppConfig {
         return template;
 	}
 	
-	@Bean
+	@Bean     // 键[字符串]: 值[字符串]
 	public StringRedisTemplate stringRedisTemplate() {
 		JedisConnectionFactory conn = new JedisConnectionFactory();
         conn.setDatabase(0);

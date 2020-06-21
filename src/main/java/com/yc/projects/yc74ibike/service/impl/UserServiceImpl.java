@@ -1,6 +1,7 @@
 package com.yc.projects.yc74ibike.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.concurrent.TimeUnit;
 
 import org.jboss.logging.Logger;
+
+import com.yc.projects.yc74ibike.bean.User;
 import com.yc.projects.yc74ibike.service.UserService;
 
 @Transactional
@@ -22,6 +25,30 @@ public class UserServiceImpl implements UserService {
 	// 操作redis中的字符串类型数据
 	@Autowired
 	private StringRedisTemplate stringRedisTemplate;
+	
+	@Autowired
+	private  MongoTemplate mongoTemplate;
+	
+	/**
+	 * 验证验证码并注册用户
+	 * @param user
+	 * @return
+	 */
+	@Override
+	public boolean verify(User user) {
+		boolean flag = false;
+		String phoneNum = user.getPhoneNum();
+		String verifyCode = user.getVerifyCode();
+		String code = stringRedisTemplate.opsForValue().get(phoneNum);  //根据电话号码到 redis中查是否有有效的验证码
+		System.out.println(  user );
+		if(verifyCode != null && verifyCode.equals(code)) {
+			//验证成功后，将用户信息保存到  mongo中
+			//mongoTemplate.save(user);
+			mongoTemplate.insert(user);
+			flag = true;
+		}
+		return flag;
+	}
 
 	@Override
 	public void genVerifyCode(String nationCode, String phoneNum) throws Exception {

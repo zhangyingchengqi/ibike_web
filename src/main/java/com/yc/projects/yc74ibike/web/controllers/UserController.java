@@ -1,14 +1,13 @@
 package com.yc.projects.yc74ibike.web.controllers;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yc.projects.yc74ibike.bean.User;
 import com.yc.projects.yc74ibike.service.UserService;
 import com.yc.projects.yc74ibike.web.model.JsonModel;
-
 
 @Controller
 public class UserController {
@@ -30,5 +29,23 @@ public class UserController {
 		}
 		return jm;
 	}
-}
 
+	@PostMapping("/verify")
+	public @ResponseBody JsonModel verify(JsonModel jm, User user) {
+		boolean flag = false;
+		try {
+			flag = userService.verify(user);
+			if (flag) {
+				jm.setCode(1);
+			} else {
+				jm.setCode(0);
+				jm.setMsg("校验码错误");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			jm.setCode(0);
+			jm.setMsg("错误原因:" + e.getMessage());
+		}
+		return jm;
+	}
+}
