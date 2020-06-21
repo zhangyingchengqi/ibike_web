@@ -9,5 +9,12 @@ public interface UserService {
 	public void genVerifyCode(String nationCode, String phoneNum) throws Exception; 
 
 	public boolean verify(User user) ;
+	
+	/**
+	 * 押金充值
+	 * @param user
+	 * @return
+	 */
+	public boolean deposit(User user);
 
 }

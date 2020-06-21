@@ -14,6 +14,18 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	
+	@PostMapping("/deposit")
+	public @ResponseBody JsonModel deposit(JsonModel jm,User user) {
+		boolean flag=userService.deposit(user);
+		if( flag) {
+			jm.setCode(1);
+		}else {
+			jm.setCode(0);
+		}
+		return jm;
+	}
 
 	@PostMapping("/genCode")
 	public @ResponseBody JsonModel genSMSCode(JsonModel jm, String nationCode, String phoneNum) {
