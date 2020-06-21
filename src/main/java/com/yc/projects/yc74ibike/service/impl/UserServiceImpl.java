@@ -34,6 +34,23 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private  MongoTemplate mongoTemplate;
 	
+
+	@Override
+	public boolean identity(User user) {
+		//TODO:调用第三方接口验证用户身份证是否是真实的。
+		int status=3;
+		UpdateResult result=mongoTemplate.updateFirst(
+				    new Query(Criteria.where("phoneNum").is(user.getPhoneNum())), 
+				    new Update().set("status", status )
+				                .set("name", user.getName())
+				                .set("idNum", user.getIdNum()),  User.class);
+		if( result.getModifiedCount()==1 ) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 	
 	
 	@Override

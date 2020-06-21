@@ -15,6 +15,23 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	/**
+	 * 
+	 * @param jm
+	 * @param user:   idNum,  name,   phoneNum
+	 * @return
+	 */
+	@PostMapping("/identity")
+	public @ResponseBody JsonModel identity(JsonModel jm, User user) {
+		boolean result=userService.identity(user);
+		if( result) {
+			jm.setCode(1);
+		}else {
+			jm.setCode( 0 );
+		}
+		return jm;
+	}
+	
 	
 	@PostMapping("/deposit")
 	public @ResponseBody JsonModel deposit(JsonModel jm,User user) {
