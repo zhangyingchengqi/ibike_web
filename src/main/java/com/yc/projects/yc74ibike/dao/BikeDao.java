@@ -24,5 +24,5 @@ public interface BikeDao {
 	/**
 	 * 根据id查车
 	 */
-	public Bike findBike(  Long bid);
+	public Bike findBike(  String bid);
 }

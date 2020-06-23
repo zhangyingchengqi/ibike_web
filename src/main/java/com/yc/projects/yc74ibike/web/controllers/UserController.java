@@ -15,6 +15,25 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@PostMapping("/recharge")
+	public @ResponseBody JsonModel recharge(JsonModel jm,double balance,String phoneNum) {
+		boolean b=false;
+		try {
+			b=userService.recharge(balance,phoneNum);
+			if( b ) {
+				jm.setCode(1);
+			}else {
+				jm.setCode(0);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			jm.setCode(0);
+			jm.setMsg(   e.getMessage() );
+		}
+		return jm;
+	}
+	
+	
 	/**
 	 * 
 	 * @param jm

@@ -40,7 +40,8 @@ public class AppConfig {
 		JedisConnectionFactory conn = new JedisConnectionFactory();
         conn.setDatabase(0);
         conn.setHostName("192.168.0.200");
-        conn.setPort(6379);
+        //conn.setPort(6379);
+        conn.setPort( 6381 );      //一个单独的一个redis服务器。
         conn.setPassword("");
         conn.setUsePool(true);
         conn.afterPropertiesSet();
@@ -55,7 +56,8 @@ public class AppConfig {
 		JedisConnectionFactory conn = new JedisConnectionFactory();
         conn.setDatabase(0);
         conn.setHostName("192.168.0.200");
-        conn.setPort(6379);
+        //conn.setPort(6379);
+        conn.setPort( 6381 );
         conn.setPassword("");
         conn.setUsePool(true);
         conn.afterPropertiesSet();

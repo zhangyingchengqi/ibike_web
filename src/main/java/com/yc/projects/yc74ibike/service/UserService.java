@@ -4,20 +4,32 @@ import com.yc.projects.yc74ibike.bean.User;
 
 public interface UserService {
 	/*
-	 * 自动生成验证码，并发送到   指定手机  phoneNum
+	 * 自动生成验证码，并发送到 指定手机 phoneNum
 	 */
-	public void genVerifyCode(String nationCode, String phoneNum) throws Exception; 
+	public void genVerifyCode(String nationCode, String phoneNum) throws Exception;
 
-	public boolean verify(User user) ;
-	
+	public boolean verify(User user);
+
 	/**
 	 * 押金充值
+	 * 
 	 * @param user
 	 * @return
 	 */
 	public boolean deposit(User user);
-	
-	/**完成身份验证 */
+
+	/** 完成身份验证 */
 	public boolean identity(User user);
+
+	/**
+	 * 充值
+	 * 
+	 * @param balance:
+	 *            金额
+	 * @param phoneNum:
+	 *            电话
+	 * @return
+	 */
+	public boolean recharge(double balance, String phoneNum);
 
 }
