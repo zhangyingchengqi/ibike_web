@@ -10,10 +10,15 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.jboss.logging.Logger;
 
+import com.google.gson.Gson;
 import com.mongodb.client.result.UpdateResult;
 import com.yc.projects.yc74ibike.bean.User;
 import com.yc.projects.yc74ibike.service.UserService;
@@ -33,6 +38,43 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+	
+	public String redisSessionKey(String openId,String sessionKey) {
+		String rsession = UUID.randomUUID().toString();
+		// (3) 首先根据openId，取出来之前存的openId对应的sessionKey的值。
+		String oldSeesionKey =stringRedisTemplate.opsForValue().get(   openId );
+		if (oldSeesionKey != null && !"".equals(oldSeesionKey)) {
+			logger.info("oldSeesionKey==" + oldSeesionKey);
+			// (4) 删除之前openId对应的缓存
+			stringRedisTemplate.delete(    oldSeesionKey  );
+			logger.info("老的openId删除以后==" + stringRedisTemplate.opsForValue().get(oldSeesionKey));
+		}
+		// (5) 开始缓存新的sessionKey：  格式:  { uuid:{ "openId":openId,"sessionKey":sessionKey }  }
+		Gson g=new Gson();
+		Map<String,String> m=new HashMap<String,String>();
+		m.put("openId", openId);
+		m.put("sessionKey", sessionKey);
+		String s=g.toJson( m);
+		//stringRedisTemplate.opsForValue().set(rsession, s, 30*24*60*60, TimeUnit.SECONDS);
+		stringRedisTemplate.opsForValue().set(rsession, s, 5*60, TimeUnit.SECONDS);
+		
+		// (6) 开始缓存新的openId与session对应关系 ：  {openId: rsession}
+		//stringRedisTemplate.opsForValue().set(openId, rsession, 30*24*60*60, TimeUnit.SECONDS);
+		stringRedisTemplate.opsForValue().set( openId, rsession, 5*60, TimeUnit.SECONDS);
+		return rsession;
+	}
+	
+	@Override
+	public void addMember(User u) {
+		mongoTemplate.insert( u );
+	}
+	
+	@Override
+	public List<User> selectMember(String openid) {
+		Query q=new Query(   
+				Criteria.where("openId").is(openid) );
+		return this.mongoTemplate.find(q, User.class,"users");
+	}
 
 	@Override
 	public boolean recharge(double balance, String phoneNum) {
@@ -87,15 +129,23 @@ public class UserServiceImpl implements UserService {
 	public boolean verify(User user) {
 		boolean flag = false;
 		String phoneNum = user.getPhoneNum();
-		String verifyCode = user.getVerifyCode();
-		String code = stringRedisTemplate.opsForValue().get(phoneNum); // 根据电话号码到
-																		// redis中查是否有有效的验证码
-		System.out.println(user);
-		if (verifyCode != null && verifyCode.equals(code)) {
-			// 验证成功后，将用户信息保存到 mongo中
-			// mongoTemplate.save(user);
-			mongoTemplate.insert(user);
-			flag = true;
+		String verifyCode = user.getVerifyCode();  //用户输入的验证码
+		String code = stringRedisTemplate.opsForValue().get(phoneNum);    //生成的验证码
+		
+		String openId=user.getOpenId();
+		String uuid=user.getUuid();
+		
+		System.out.println(  user );
+		if(verifyCode != null && verifyCode.equals(code)) {
+			//验证成功后，将用户信息保存到  mongo中
+			//mongoTemplate.save(user);
+			int status=1;
+			UpdateResult  result=mongoTemplate.updateFirst(new Query(Criteria.where("openId").is(openId)), new Update().set("status", status).set("phoneNum", phoneNum),  User.class);
+			if(  result.getModifiedCount() ==1 ) {
+				return true;
+			}else {
+				return false;
+			}
 		}
 		return flag;
 	}

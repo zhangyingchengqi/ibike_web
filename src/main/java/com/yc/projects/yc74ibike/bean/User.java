@@ -29,8 +29,29 @@ public class User implements Serializable{
 	//这个属性在数据库中不存储
 	@Transient     // 瞬态化
 	private String verifyCode;
+	
+	private String openId;
+	
+	private String uuid;
+	
 
 	
+
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
+	public String getOpenId() {
+		return openId;
+	}
+
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
 
 	public int getStatus() {
 		return status;
