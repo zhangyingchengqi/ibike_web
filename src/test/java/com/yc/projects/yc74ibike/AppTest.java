@@ -86,7 +86,7 @@ public class AppTest extends TestCase {
 
 	@Test
 	public void testUpdateBike() {
-		Bike b = bikeDao.findBike(1L);
+		Bike b = bikeDao.findBike(1L+"");
 		b.setLatitude(20.9);
 		b.setLongitude(22.2);
 		b.setStatus(2);
@@ -96,13 +96,13 @@ public class AppTest extends TestCase {
 
 	@Test
 	public void testFindBike() {
-		Bike b = bikeDao.findBike(1L);
+		Bike b = bikeDao.findBike(1L+"");
 		assertNotNull(b);
 	}
 
 	@Test
 	public void testServiceOpen() {
-		Bike b = bikeService.findByBid(1L);
+		Bike b = bikeService.findByBid(1L+"");
 		bikeService.open(b);
 	}
 

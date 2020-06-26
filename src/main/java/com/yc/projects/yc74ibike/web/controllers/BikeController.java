@@ -52,6 +52,8 @@ public class BikeController {
 		List<Bike> list = bikeService.findNearAll(bike);
 		jm.setCode(1);
 		jm.setObj(list);
+		logger.info(    "位置为:"+ bike.getLongitude()+","+bike.getLatitude()+"附近的车有:" );
+		logger.info(   list.toString() );
 		return jm;
 	}
 

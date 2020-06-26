@@ -109,8 +109,7 @@ public class BikeServiceImpl implements BikeService {
 		Query query=new Query();
 		query.addCriteria(  Criteria.where("status").is(  bike.getStatus()  )     )
 		     .addCriteria(  Criteria.where("loc").near(new Point( bike.getLongitude(),bike.getLatitude()) ))
-		     .limit(10);
-		
+		     .limit(30);
 		//   查出来的json结构: { "_id" : 100001, "status" : 1, "loc" : [ 28.189133, 112.943868 ], "qrcode" : "" }   
 		List<Bike> list= this.mongoTemplate.find(query, Bike.class, "bike");
 		

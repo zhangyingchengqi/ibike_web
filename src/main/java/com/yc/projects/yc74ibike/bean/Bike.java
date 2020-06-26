@@ -11,7 +11,7 @@ public class Bike implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@ApiModelProperty(value = "编号")
 	private String bid;
-	@ApiModelProperty(value = "状态: 0 未启用  1 启用且未开锁  2. 开锁使用中  3. 报修中 ")
+	@ApiModelProperty(value = "状态: 0 未启用  1 启用且未开锁  2. 开锁使用中  3. 报修中  4. 骑行 ")
 	private int status;
 	@ApiModelProperty(value = "二维码")
 	private String qrcode;
