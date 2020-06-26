@@ -17,7 +17,7 @@ public class User implements Serializable{
 
 	private static final long serialVersionUID = 4972669035852334271L;
 
-	private int status;   //用户的状态:  0 刚注册   1 押金缴纳   2. 实名认证
+	private int status;   //用户的状态:  0 没有注册   1. 注册电话成功  2 押金缴纳成功   3. 实名认证,可以开锁   4. 骑行态. 
 	//这个字段创建索引
 	//@Indexed(unique = true)
 	private String phoneNum;
