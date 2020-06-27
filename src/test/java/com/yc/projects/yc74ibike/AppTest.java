@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -39,19 +40,24 @@ public class AppTest extends TestCase {
 	
 	@Autowired
 	private RedisTemplate redisTemplate;
+	@Autowired
+	private StringRedisTemplate stringRedisTemplate;
 	
 	@Autowired
 	private UserService userService;
+	
+	@Test
+	public void testRedisTemplate() {
+		 stringRedisTemplate.opsForValue().set("hello", "world");
+		 stringRedisTemplate.opsForValue().set("hello2", "world");
+	}
 	
 	@Test
 	public void testUserService() throws Exception {
 		userService.genVerifyCode("86", "15386490869");
 	}
 	
-	@Test
-	public void testRedisTemplate() {
-		System.out.println(    redisTemplate);
-	}
+	
 	
 	
 	@Test 

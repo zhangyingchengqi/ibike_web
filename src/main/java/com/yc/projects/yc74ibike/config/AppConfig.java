@@ -36,15 +36,7 @@ public class AppConfig {
 	
 	
 	@Bean   // 键[字符串]: 值[对象]
-	public RedisTemplate redsiTemplate() {
-		JedisConnectionFactory conn = new JedisConnectionFactory();
-        conn.setDatabase(0);
-        conn.setHostName("192.168.0.200");
-        //conn.setPort(6379);
-        conn.setPort( 6381 );      //一个单独的一个redis服务器。
-        conn.setPassword("");
-        conn.setUsePool(true);
-        conn.afterPropertiesSet();
+	public RedisTemplate redsiTemplate(  JedisConnectionFactory conn   ) {
         RedisTemplate<byte[], byte[]> template = new RedisTemplate<>();
         template.setConnectionFactory(conn);
         template.afterPropertiesSet();
@@ -52,15 +44,7 @@ public class AppConfig {
 	}
 	
 	@Bean     // 键[字符串]: 值[字符串]
-	public StringRedisTemplate stringRedisTemplate() {
-		JedisConnectionFactory conn = new JedisConnectionFactory();
-        conn.setDatabase(0);
-        conn.setHostName("192.168.0.200");
-        //conn.setPort(6379);
-        conn.setPort( 6381 );
-        conn.setPassword("");
-        conn.setUsePool(true);
-        conn.afterPropertiesSet();
+	public StringRedisTemplate stringRedisTemplate(     JedisConnectionFactory conn      ) {
         StringRedisTemplate template = new StringRedisTemplate();
         template.setConnectionFactory(conn);
         template.afterPropertiesSet();
