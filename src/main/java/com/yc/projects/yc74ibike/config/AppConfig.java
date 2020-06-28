@@ -1,5 +1,8 @@
 package com.yc.projects.yc74ibike.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.jboss.logging.Logger;
@@ -24,6 +27,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 
 @Configuration
 @ComponentScan(basePackages = "com.yc")
@@ -66,7 +70,7 @@ public class AppConfig {
      */
     @Bean("mongoDbFactory")
     public MongoDbFactory factory() {
-        return new SimpleMongoDbFactory(client(), "yc74ibike");
+        return new SimpleMongoDbFactory(client(), "mybike");
     }
     
     /**
@@ -77,7 +81,17 @@ public class AppConfig {
      */
     @Bean("mongoClient")
     public MongoClient client() {
-        return new MongoClient("192.168.0.200", 27017);
+    	List<ServerAddress> list=new ArrayList<ServerAddress>();
+    	// mongos   路由服务器. 
+    	ServerAddress sa1=new ServerAddress("192.168.0.200",23000);
+    	ServerAddress sa2=new ServerAddress("192.168.0.201",23000);
+    	ServerAddress sa3=new ServerAddress("192.168.0.202",23000);
+    	list.add( sa1 );
+    	list.add( sa2 );
+    	list.add( sa3 );
+    	
+    	return new MongoClient(   list );
+        //return new MongoClient("192.168.0.200", 27017);
     }
 
 	@Bean // TODO: 修改成数据库联接池, 获取数据源
