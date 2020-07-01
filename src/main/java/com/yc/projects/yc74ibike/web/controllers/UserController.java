@@ -26,8 +26,8 @@ public class UserController {
 	
 	private Logger logger = Logger.getLogger(UserController.class);
 	
-	private final String SECRET = "8d94145aafe229e712f2eea474018c60";
-	private final String APPID = "wx56d05b16436e1eeb";
+	private final String SECRET = "";
+	private final String APPID = "";
 	private final String WXSERVER = "https://api.weixin.qq.com/sns/jscode2session?appid=" + APPID + "&secret=" + SECRET + "&grant_type=authorization_code";
 
 	
