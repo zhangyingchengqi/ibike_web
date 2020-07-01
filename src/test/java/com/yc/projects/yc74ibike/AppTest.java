@@ -37,43 +37,62 @@ public class AppTest extends TestCase {
 	private BikeService bikeService;
 	@Autowired
 	private MongoTemplate mongoTemplate;
-	
+
 	@Autowired
 	private RedisTemplate redisTemplate;
 	@Autowired
 	private StringRedisTemplate stringRedisTemplate;
-	
+
 	@Autowired
 	private UserService userService;
-	
-	@Test
-	public void testRedisTemplate() {
-		 stringRedisTemplate.opsForValue().set("hello", "world");
-		 stringRedisTemplate.opsForValue().set("hello2", "world");
+
+	@Test  // 准备测试数据
+	public void test1() {
+		double x=28.2043941;
+		double y=112.959854;
+		for (int i = 0; i < 100; i++) {
+			x+=0.0000010;
+			for (int j = 0; j < 100; j++) {
+				y+=0.0000003;
+				Double loc[] = new Double[] { Double.valueOf(x), Double.valueOf(y) };
+				Bike b=new Bike();
+				b.setStatus(1);
+				b.setLoc(  loc);
+				b.setQrcode("");
+				mongoTemplate.insert(b);
+			}
+		}
 	}
 	
+	
+	
+	
+
+	@Test
+	public void testRedisTemplate() {
+		stringRedisTemplate.opsForValue().set("hello", "world");
+		stringRedisTemplate.opsForValue().set("hello2", "world");
+	}
+
 	@Test
 	public void testUserService() throws Exception {
 		userService.genVerifyCode("86", "15386490869");
 	}
-	
-	
-	
-	
-	@Test 
+
+	@Test
 	public void testNearBikes() {
-		Bike b=new Bike();
+		Bike b = new Bike();
 		b.setLatitude(28.189122);
 		b.setLongitude(112.943867);
 		b.setStatus(1);
-		List<Bike> list=bikeService.findNearAll(b);
-		System.out.println(  list );
+		List<Bike> list = bikeService.findNearAll(b);
+		System.out.println(list);
 	}
-	
+
 	@Test
 	public void testMongoTemplate() {
-		System.out.println( mongoTemplate.getDb().getName() );
-		System.out.println(  mongoTemplate.getCollectionNames()  );
+		System.out.println(mongoTemplate.getDb().getName());
+		System.out.println(mongoTemplate.getCollectionNames());
 	}
 
 	@Test
@@ -92,7 +111,7 @@ public class AppTest extends TestCase {
 
 	@Test
 	public void testUpdateBike() {
-		Bike b = bikeDao.findBike(1L+"");
+		Bike b = bikeDao.findBike(1L + "");
 		b.setLatitude(20.9);
 		b.setLongitude(22.2);
 		b.setStatus(2);
@@ -102,13 +121,13 @@ public class AppTest extends TestCase {
 
 	@Test
 	public void testFindBike() {
-		Bike b = bikeDao.findBike(1L+"");
+		Bike b = bikeDao.findBike(1L + "");
 		assertNotNull(b);
 	}
 
 	@Test
 	public void testServiceOpen() {
-		Bike b = bikeService.findByBid(1L+"");
+		Bike b = bikeService.findByBid(1L + "");
 		bikeService.open(b);
 	}
 

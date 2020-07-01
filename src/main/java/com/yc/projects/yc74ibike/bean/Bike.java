@@ -28,6 +28,72 @@ public class Bike implements Serializable {
 	private String[] types;
 	private String openid;
 
+	private String province;
+	private String city;
+	private String district;
+	private String street;
+	private String street_number;
+	private Long payTime;
+	private Long repairTime;
+	
+	
+
+	public Long getRepairTime() {
+		return repairTime;
+	}
+
+	public void setRepairTime(Long repairTime) {
+		this.repairTime = repairTime;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
+
+	public String getStreet_number() {
+		return street_number;
+	}
+
+	public void setStreet_number(String street_number) {
+		this.street_number = street_number;
+	}
+
+	public Long getPayTime() {
+		return payTime;
+	}
+
+	public void setPayTime(Long payTime) {
+		this.payTime = payTime;
+	}
+
 	public String getPhoneNum() {
 		return phoneNum;
 	}
@@ -128,7 +194,7 @@ public class Bike implements Serializable {
 	@Override
 	public String toString() {
 		return "Bike [bid=" + bid + ", status=" + status + ", qrcode=" + qrcode + ", latitude=" + latitude + ", longitude=" + longitude + ", id=" + id + ", loc=" + Arrays.toString(loc) + ", phoneNum="
-				+ phoneNum + ", types=" + Arrays.toString(types) + ", openid=" + openid + "]";
+				+ phoneNum + ", types=" + Arrays.toString(types) + ", openid=" + openid + "]\n";
 	}
 
 }

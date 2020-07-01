@@ -16,5 +16,12 @@ public class LogServiceImpl implements LogService {
 		//相当于   sql   insert into logs values(   log );
 		mongoTemplate.save( log,"logs");
 	}
+	
+	
+	@Override
+	public void savePayLog(String log) {
+		//相当于   sql   insert into logs values(   log );
+		mongoTemplate.save( log,"payLogs");
+	}
 
 }

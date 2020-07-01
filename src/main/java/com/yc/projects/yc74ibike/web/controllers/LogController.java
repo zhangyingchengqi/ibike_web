@@ -22,4 +22,15 @@ public class LogController {
         jsonModel.setCode(1);
         return jsonModel;
     }
+    
+    @PostMapping("/log/addPayLog")   //只支持  POST请求
+    @ResponseBody   //回送给客户端的是一个json数据
+    public JsonModel addPayLog( JsonModel jsonModel,@RequestBody String log) {
+        logService.savePayLog(log);
+        jsonModel.setCode(1);
+        return jsonModel;
+    }
+    
+    
+    
 }
